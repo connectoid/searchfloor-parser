@@ -27,6 +27,19 @@ def extract_cover_from_fb2(filename, path):
                     return pictures_name
 
 
+def extract_genres_from_fb2(filename, path):
+    genres = []
+    file = f'{path}/{filename}'
+    doc = xml.dom.minidom.parse(file)
+    genre_links = doc.getElementsByTagName('genre')
+    for genre_link in genre_links:
+        node = genre_link.childNodes[0]
+        if node.nodeType == node.TEXT_NODE:
+                genre_text = node.data
+                genres.append(genre_text)
+    return genres
+
+
 def extract_zip(archive, path):
     archive = f'{path}/{archive}'
     with zipfile.ZipFile(archive, 'r') as zip_file:
