@@ -15,7 +15,7 @@ authorised = is_autorised(base_url, session)
 print(f'Authorised: {authorised}')
 
 
-books = get_books(search_url. session)
+books = get_books(search_url, session)
 count = 0
 all_genres = []
 if books:
