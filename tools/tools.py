@@ -77,3 +77,26 @@ def download_file(url, path):
     else:
         print(f'Requests error in download_file: {response.status_code}')
         return False
+
+def login_by_tg():
+    import requests
+
+    headers = {
+        'Referer': 'https://searchfloor.org/popular?category=books&period=today',
+        'Upgrade-Insecure-Requests': '1',
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
+        'sec-ch-ua': '"Google Chrome";v="123", "Not:A-Brand";v="8", "Chromium";v="123"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"macOS"',
+    }
+
+    params = {
+        'id': '6803677996',
+        'first_name': 'Isaac',
+        'last_name': 'Bleeding',
+        'auth_date': '1716931604',
+        'hash': '9ef4e6105faefdc12e92d72b0ecedbd897488f197b1a257319658ae77affaf2b',
+    }
+
+    response = requests.get('https://searchfloor.org/login', params=params, headers=headers)
+    return response.status_code
