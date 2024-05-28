@@ -40,5 +40,5 @@ cookies = {
 status_code = login_by_tg()
 print(status_code)
 
-button = is_autorised(base_url, cookies)
+button = is_autorised(base_url)
 print(button)

@@ -42,8 +42,8 @@ def get_books(url):
         return False
     
 
-def is_autorised(url, cookies):
-    response = requests.get(url=url, cookies=cookies)
+def is_autorised(url):
+    response = requests.get(url=url)
     soup = BeautifulSoup(response.text, 'lxml')
     loginbar = soup.find('div', class_='loginbar')
     try:
