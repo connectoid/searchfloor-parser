@@ -97,6 +97,6 @@ def login_by_tg():
         'auth_date': '1716931604',
         'hash': '9ef4e6105faefdc12e92d72b0ecedbd897488f197b1a257319658ae77affaf2b',
     }
-
-    response = requests.get('https://searchfloor.org/login', params=params, headers=headers)
-    return response.status_code
+    session = requests.Session()
+    response = session.get('https://searchfloor.org/login', params=params, headers=headers)
+    return session, response.status_code

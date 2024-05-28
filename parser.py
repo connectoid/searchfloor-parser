@@ -37,8 +37,8 @@ cookies = {
 #         #     break
 #     print(all_genres)
 
-status_code = login_by_tg()
+session, status_code = login_by_tg()
 print(status_code)
 
-button = is_autorised(base_url)
+button = is_autorised(base_url, session)
 print(button)
