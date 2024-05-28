@@ -15,27 +15,27 @@ cookies = {
 }
 
 
-books = get_books(search_url)
-count = 0
-all_genres = []
-if books:
-    for book in books:
-        filename = download_file(book['url'], path)
-        if filename:
-            print(f'Скачана книга {filename}')
-            pdf_filename = convert_fb2_to_pdf(filename, path)
-            picture_filename = extract_cover_from_fb2(filename, path)
-            genres = extract_genres_from_fb2(filename, path)
-            for genre in genres:
-                if genre not in all_genres:
-                    all_genres.append(genre)
-            # description = get_description(pdf_filename, path)
-            # print(description)
-            count += 1
-        # if count >= 15:
-        #     break
-    print(all_genres)
+# books = get_books(search_url)
+# count = 0
+# all_genres = []
+# if books:
+#     for book in books:
+#         filename = download_file(book['url'], path)
+#         if filename:
+#             print(f'Скачана книга {filename}')
+#             pdf_filename = convert_fb2_to_pdf(filename, path)
+#             picture_filename = extract_cover_from_fb2(filename, path)
+#             genres = extract_genres_from_fb2(filename, path)
+#             for genre in genres:
+#                 if genre not in all_genres:
+#                     all_genres.append(genre)
+#             # description = get_description(pdf_filename, path)
+#             # print(description)
+#             count += 1
+#         # if count >= 15:
+#         #     break
+#     print(all_genres)
 
 
-# button = is_autorised(base_url, cookies)
-# print(button)
+button = is_autorised(base_url, cookies)
+print(button)
