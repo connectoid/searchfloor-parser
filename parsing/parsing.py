@@ -4,9 +4,9 @@ from bs4 import BeautifulSoup
 base_url = 'https://searchfloor.org'
 
 
-def get_books(url):
+def get_books(url, session):
     books = []
-    response = requests.get(url)
+    response = session.get(url)
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'lxml')
         main_div = soup.find('div', class_='tab-content')

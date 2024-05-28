@@ -62,9 +62,9 @@ def convert_fb2_to_pdf(filename, path):
     return pdf_filename
 
 
-def download_file(url, path):
+def download_file(url, path, session):
     print(f'Загружаем файл книги по ссылке {url}')
-    response = requests.get(url)
+    response = session.get(url)
     if response.status_code == 200:
         headers = response.headers
         content_disposition = headers['content-disposition']
