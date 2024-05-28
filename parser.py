@@ -32,8 +32,8 @@ if books:
             # description = get_description(pdf_filename, path)
             # print(description)
             count += 1
-        if count >= 15:
-            break
+        # if count >= 15:
+        #     break
     print(all_genres)
 
 
