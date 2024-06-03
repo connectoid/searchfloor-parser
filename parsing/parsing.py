@@ -1,8 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-base_url = 'https://searchfloor.org'
-
+from settings.settings import base_url
 
 def get_books(url, session):
     books = []
@@ -22,7 +21,10 @@ def get_books(url, session):
                 skiped += 1
                 print(f'{count}. Найдена донатная книга {title}')
             book_json['title'] = title
-            book_json['author'] = items[1].find('a').text
+            book_json['namebook'] = title
+            authors = items[1].find_all('a')
+            authors = [author.text for author in authors]
+            book_json['authors'] = authors
             try:
                 book_json['series'] = items[2].find('a').text
             except:
@@ -51,3 +53,17 @@ def is_autorised(url, session):
         return True
     except:
         return False
+
+
+def extract_txt_from_fb2(filename, path):
+    fb2_file = f'{path}/{filename}'
+    txt_file = filename.replace('.fb2', '.txt')
+    txt_file_full_path = f'{path}/{txt_file}'
+    with open(fb2_file, "r") as file:
+        soup = BeautifulSoup(file, "xml")
+
+    text = soup.find('body').text
+
+    with open(txt_file_full_path, "w") as file:
+        file.write(text)
+    return txt_file

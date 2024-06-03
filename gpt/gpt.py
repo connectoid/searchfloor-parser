@@ -3,63 +3,108 @@ import os
 
 from dotenv import load_dotenv
 
+from settings.settings import prompt_description
+from posting.posting import get_categories
+
 load_dotenv()
 api_key = os.getenv('api_key')
-files_dir = 'books'
-prompt =  """
-    Максимально подробно от 500 слов опиши о чем книга, главных героев и сюжетную линию. Вступление не нужно, пиши сразу про книгу! Пиши только по сути, без размытых слов и фраз! Разбей текст на абзацы!
-    Только не начинай с фразы: - это захватывающая книга. Пытайся писать разнообразно, не используя одни и те же вступления и заключения.
-"""
+api_keys = os.getenv('api_keys')
+
+
+
+
 
 def add_file(filename, path):
     print('Загружаем файл на ChatPDF')
-    files = [
-        ('file', ('file', open(f'{path}/{filename}', 'rb'), 'application/octet-stream'))
-    ]
-    headers = {
-        'x-api-key': api_key
-    }
-    response = requests.post(
-        'https://api.chatpdf.com/v1/sources/add-file', headers=headers, files=files)
+    for api_key in api_keys:
+        files = [
+            ('file', ('file', open(f'{path}/{filename}', 'rb'), 'application/octet-stream'))
+        ]
+        headers = {
+            'x-api-key': api_key
+        }
+        try:
+            response = requests.post(
+                'https://api.chatpdf.com/v1/sources/add-file', headers=headers, files=files)
 
-    if response.status_code == 200:
-        print('Получен Source ID:', response.json()['sourceId'])
-        source_id = response.json()['sourceId']
-        return source_id
-    else:
-        print('Status:', response.status_code)
-        print('Error:', response.text)
-        return False
-    
+            if response.status_code == 200:
+                print('Получен Source ID:', response.json()['sourceId'])
+                source_id = response.json()['sourceId']
+                return source_id
+            else:
+                print('Status:', response.status_code)
+                print('ChatPDF: add_file Error:', response.text)
+                return False
+        except Exception as e:
+            print(f'Ошибка запроса к ЧатПФД: {e}')
+            print(f'Возможно закончилась подписка, пробуем следующий ключ')
+    print('Попытки перебора ключа ЧатПДФ закончились')
+    return False
+
 
 def get_description(filename, path):
+    genres_list, genres_dict = get_categories()
+    prompt_genre =  f"""
+        Выбери один или несколько жанров из этого списка {genres_list} к которым можно отнести эти книги. В ответе укажи только один или несколько жанров через запятную, в точности так же как в этом списке {genres_list}
+    """
     print('Получаем описание книги с ChatPDF')
     source_id = add_file(filename, path)
-    headers = {
-        'x-api-key': f'{api_key}',
-        "Content-Type": "application/json",
-    }
-    data = {
-        'sourceId': source_id,
-        'messages': [
-            {
-                'role': "user",
-                'content': prompt,
-            }
-        ]
-    }
-    response = requests.post(
-        'https://api.chatpdf.com/v1/chats/message', headers=headers, json=data)
+    if source_id:
+        headers = {
+            'x-api-key': f'{api_key}',
+            "Content-Type": "application/json",
+        }
+        data_description = {
+            'sourceId': source_id,
+            'messages': [
+                {
+                    'role': "user",
+                    'content': prompt_description,
+                }
+            ]
+        }
 
-    if response.status_code == 200:
-        print('Описание получено')
-        return response.json()['content']
+        data_genre = {
+            'sourceId': source_id,
+            'messages': [
+                {
+                    'role': "user",
+                    'content': prompt_genre,
+                }
+            ]
+        }
+
+        response_description = requests.post(
+            'https://api.chatpdf.com/v1/chats/message', headers=headers, json=data_description)
+        if response_description.status_code == 200:
+            print('Описание получено')
+            description = response_description.json()['content']
+            print(description[:50] + '...')
+        else:
+            print('Status:', response_description.status_code)
+            print('ChatPDF: response_description Error:', response_description.text)
+            description = False
+
+        
+        response_genre = requests.post(
+            'https://api.chatpdf.com/v1/chats/message', headers=headers, json=data_genre)
+        if response_genre.status_code == 200:
+            print('Жанры получены')
+            genres = response_genre.json()['content']
+            try:
+                genres_names = genres.split(',')
+                genres_ids = [genres_dict[genre.strip()] for genre in genres_names]
+            except:
+                print('ChatPDF: Error converting genres to list')
+                genres_names = ['Романы']
+                genres_ids = [14]
+        else:
+            print('Status:', response_genre.status_code)
+            print('ChatPDF: response_genre Error:', response_genre.text)
+            genres_ids = False
+            genres_names = False
+        
+        return description, genres_names, genres_ids
     else:
-        print('Status:', response.status_code)
-        print('Error:', response.text)
-        return False
-    
-
-# source_id = add_file('hendi.pdf', 'books')
-# if source_id:
-#     description = get_description(source_id)
+        print('ChatPDF: Ошибка загрузки файла, возможно закончилась подписка на ChatPDF')
+        return False, False, False

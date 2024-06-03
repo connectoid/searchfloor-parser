@@ -1,11 +1,15 @@
 import urllib.parse
 import os
+import io
+
 import xml.dom.minidom
 import base64
 
 import requests
 import pymupdf
 import zipfile
+
+from settings.settings import db_file
 
 
 def extract_cover_from_fb2(filename, path):
@@ -18,8 +22,9 @@ def extract_cover_from_fb2(filename, path):
         for node in nodes:
             if node.nodeType == node.TEXT_NODE:
                 base64_pictures_bytes = node.data.encode('utf-8')
-                pictures_name = file.replace('.fb2', '.png')
-                with open(pictures_name, 'wb') as file_to_save:
+                full_pictures_name = file.replace('.fb2', '.png')
+                pictures_name = filename.replace('.fb2', '.png')
+                with open(full_pictures_name, 'wb') as file_to_save:
                     decoded_image_data = base64.decodebytes(base64_pictures_bytes)
                     file_to_save.write(decoded_image_data)
                     minimal = int(minimal)
@@ -28,6 +33,19 @@ def extract_cover_from_fb2(filename, path):
 
 
 def extract_genres_from_fb2(filename, path):
+    genres = []
+    file = f'{path}/{filename}'
+    doc = xml.dom.minidom.parse(file)
+    genre_links = doc.getElementsByTagName('genre')
+    for genre_link in genre_links:
+        node = genre_link.childNodes[0]
+        if node.nodeType == node.TEXT_NODE:
+                genre_text = node.data
+                genres.append(genre_text)
+    return genres
+
+
+def delect_section_from_fb2(filename, path):
     genres = []
     file = f'{path}/{filename}'
     doc = xml.dom.minidom.parse(file)
@@ -100,3 +118,21 @@ def login_by_tg():
     session = requests.Session()
     response = session.get('https://searchfloor.org/login', params=params, headers=headers)
     return session, response.status_code
+
+
+def add_title_to_db(title):
+    if not os.path.exists(db_file):
+        with open(db_file, 'w') as file:
+            pass
+    with open(db_file, 'a') as file:
+        file.write(title + '\n')
+    print('Title книги успешно добавлен в файл БД.')
+
+
+def check_is_title_exists(title):
+    if not os.path.exists(db_file):
+        with open(db_file, 'w') as file:
+            pass
+    with open(db_file, 'r') as file:
+        titles_set = set(word.strip() for word in file)
+        return title in titles_set

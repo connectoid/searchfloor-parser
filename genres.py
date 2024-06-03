@@ -6,3 +6,7 @@ genres = ['wuxia', 'fantasy_action', 'sf_heroic', 'boyar_anime', 'fantasy', 'sf_
           'sf_social', 'sf_action', 'novel', 'popadantsy-v-kosmos', 'sf-action', 'popadantsy', 
           'popadanec', 'sf_space', 'popadantsy_vo_vremeni', 'adv_history', 'sf_litrpg', 
           'sf_realrpg', 'urban_fantasy', 'dark_fantasy', 'sf_postapocalyptic', 'detective', 'sf_epic', 'sf']
+
+categories = ['123 (3)', 'read (4)', 'Бизнес и финансы (5)', 
+              'История (15)', 'Попаданцы (10)', 'Психология (6)', 
+              'Романы (14)', 'Саморазвитие (7)', 'Фантастика (12)', 'Юмор (11)']
