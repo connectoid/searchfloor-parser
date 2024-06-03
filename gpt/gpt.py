@@ -7,9 +7,11 @@ from settings.settings import prompt_description
 from posting.posting import get_categories
 
 load_dotenv()
-api_key = os.getenv('api_key')
-api_keys = os.getenv('api_keys')
-
+# api_key = os.getenv('api_key')
+api_keys = []
+api_keys.append(os.getenv('api_key_1'))
+api_keys.append(os.getenv('api_key_2'))
+api_keys.append(os.getenv('api_key_3'))
 
 
 
