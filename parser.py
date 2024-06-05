@@ -9,7 +9,7 @@ from gpt.gpt import get_description
 from settings.settings import path, search_url, logging
 
 
-MAX_PDF_SIZE = 
+MAX_PDF_SIZE = 5000000
 
 logging.info('PARSER STARTED')
 
