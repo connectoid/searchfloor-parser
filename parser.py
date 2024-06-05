@@ -6,10 +6,9 @@ from tools.tools import (download_file, convert_fb2_to_pdf, extract_cover_from_f
 from posting.posting import (create_post, get_or_create_tag, upload_book, upload_media, get_category_link_by_id,
                              update_post_by_reedon_link)
 from gpt.gpt import get_description
-from settings.settings import path, search_url, logging
+from settings.settings import path, search_url, logging, MAX_PDF_SIZE
 
 
-MAX_PDF_SIZE = 5000000
 
 logging.info('PARSER STARTED')
 
@@ -27,6 +26,10 @@ def main(session):
                     print(f'Скачана книга {filename}')
                     logging.info(f'Скачана книга {filename}')
                     pdf_filename = convert_fb2_to_pdf(filename, path)
+                    if get_file_size(pdf_filename) > MAX_PDF_SIZE:
+                        print(f'Файл {pdf_filename} слишком большой, пропускаем')
+                        logging.warning(f'Файл {pdf_filename} слишком большой, пропускаем')
+                        continue
                     picture_filename = extract_cover_from_fb2(filename, path)
                     description, genres_names, genres_ids = get_description(pdf_filename, path)
                     if description and genres_names and genres_ids:

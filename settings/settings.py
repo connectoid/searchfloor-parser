@@ -27,3 +27,5 @@ logging.basicConfig(
     format = "%(asctime)s - %(module)s - %(levelname)s - %(funcName)s: %(lineno)d - %(message)s", 
     datefmt='%H:%M:%S',
     )
+
+MAX_PDF_SIZE = 5000000
