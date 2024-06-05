@@ -139,3 +139,9 @@ def check_is_title_exists(title):
     with open(db_file, 'r') as file:
         titles_set = set(word.strip() for word in file)
         return title in titles_set
+    
+
+def get_file_size(filename, path):
+    full_filename = f'{path}/{filename}'
+    filesize = os.path.getsize(full_filename)
+    return filesize

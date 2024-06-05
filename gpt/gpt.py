@@ -37,7 +37,7 @@ def add_file(filename, path, api_key):
         else:
             print('Status:', response.status_code)
             print('ChatPDF: add_file Error:', response.text)
-            logging.error('ChatPDF: add_file Error:', response.text)
+            logging.error(f'ChatPDF: add_file Error: {response.text}')
             return False
     except Exception as e:
         print(f'Ошибка запроса к ЧатПФД: {e}')
