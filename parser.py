@@ -26,7 +26,7 @@ def main(session):
                     print(f'Скачана книга {filename}')
                     logging.info(f'Скачана книга {filename}')
                     pdf_filename = convert_fb2_to_pdf(filename, path)
-                    if get_file_size(path, pdf_filename) > MAX_PDF_SIZE:
+                    if get_file_size(pdf_filename, path) > MAX_PDF_SIZE:
                         print(f'Файл {pdf_filename} слишком большой, пропускаем')
                         logging.warning(f'Файл {pdf_filename} слишком большой, пропускаем')
                         continue
