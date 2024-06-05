@@ -1,4 +1,5 @@
 import PyPDF2
+import os
 from pathlib import Path
 
 pathlist = Path('books').rglob('*.pdf')
