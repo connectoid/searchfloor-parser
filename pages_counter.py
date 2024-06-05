@@ -7,7 +7,8 @@ books_count = 0
 for path in pathlist:
     books_count += 1
     path_in_str = str(path)
-    print(f'{books_count}. {path_in_str}')
+    filesize = os.path.getsize(path_in_str)
+    print(f'{books_count}. {path_in_str} - {filesize}')
     pdfReader = PyPDF2.PdfReader(path_in_str)
     totalPages = len(pdfReader.pages)           
     overall_pages += totalPages
