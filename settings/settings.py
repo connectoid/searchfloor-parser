@@ -1,3 +1,5 @@
+import logging
+
 path = 'books'
 
 db_file = 'titles.txt'
@@ -18,3 +20,10 @@ prompt_description =  """
     Максимально подробно от 500 слов и не менее 5 абзацев опиши о чем книга, главных героев и сюжетную линию. Вступление не нужно, пиши сразу про книгу! Пиши только по сути, без размытых слов и фраз! Разбей текст на абзацы!
     Только не начинай с фразы: - это захватывающая книга. Пытайся писать разнообразно, не используя одни и те же вступления и заключения.
 """
+
+logging.basicConfig(
+    level=logging.DEBUG, 
+    filename = "parserlog.log", 
+    format = "%(asctime)s - %(module)s - %(levelname)s - %(funcName)s: %(lineno)d - %(message)s", 
+    datefmt='%H:%M:%S',
+    )

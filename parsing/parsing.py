@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-from settings.settings import base_url
+from settings.settings import base_url, logging
 
 def get_books(url, session):
     books = []
@@ -20,6 +20,7 @@ def get_books(url, session):
                 count += 1
                 skiped += 1
                 print(f'{count}. Найдена донатная книга {title}')
+                logging.info(f'{count}. Найдена донатная книга {title}')
             book_json['title'] = title
             book_json['namebook'] = title
             authors = items[1].find_all('a')
@@ -33,14 +34,18 @@ def get_books(url, session):
                 book_json['url'] = base_url + book.find('button')['data-url']
             except:
                 print(f'Пропускаем донатную книгу {title}, так как нет подписки')
+                logging.warning(f'Пропускаем донатную книгу {title}, так как нет подписки')
                 continue
             count += 1
             print(f'{count}. Добавляем книгу {title}')
+            logging.info(f'{count}. Добавляем книгу {title}')
             books.append(book_json)
         print(f'Донатных книг {skiped} из {count}')
+        logging.info(f'Донатных книг {skiped} из {count}')
         return books
     else:
         print(f'Request error: {response.status_code}')
+        logging.error(f'Request error: {response.status_code}')
         return False
     
 

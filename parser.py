@@ -6,7 +6,12 @@ from tools.tools import (download_file, convert_fb2_to_pdf, extract_cover_from_f
 from posting.posting import (create_post, get_or_create_tag, upload_book, upload_media, get_category_link_by_id,
                              update_post_by_reedon_link)
 from gpt.gpt import get_description
-from settings.settings import path, search_url
+from settings.settings import path, search_url, logging
+
+
+
+
+logging.info('PARSER STARTED')
 
 books_limit = 10
 
@@ -20,6 +25,7 @@ def main(session):
                 txt_filename = extract_txt_from_fb2(filename, path)
                 if filename:
                     print(f'Скачана книга {filename}')
+                    logging.info(f'Скачана книга {filename}')
                     pdf_filename = convert_fb2_to_pdf(filename, path)
                     picture_filename = extract_cover_from_fb2(filename, path)
                     description, genres_names, genres_ids = get_description(pdf_filename, path)
@@ -50,11 +56,13 @@ def main(session):
                         add_title_to_db(book['title'])
                     else:
                         print(f'Описание и жанр не получены, возможно закончилась подписка на ChatPDF')
+                        logging.warning(f'Описание и жанр не получены, возможно закончилась подписка на ChatPDF')
                         count += 1
                         break
             else:
                 title = book['title']
                 print(f'Книга {title} уже добавлена, пропускаем.')
+                logging.info(f'Книга {title} уже добавлена, пропускаем.')
             if count >= books_limit:
                 break
 

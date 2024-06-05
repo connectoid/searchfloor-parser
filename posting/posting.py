@@ -7,7 +7,7 @@ from time import sleep
 from dotenv import load_dotenv
 
 from tools.tools import download_file, extract_zip
-from settings.settings import endpoints, title_postfix
+from settings.settings import endpoints, title_postfix, logging
 
 load_dotenv()
 app_password = os.getenv('app_password')
@@ -113,6 +113,7 @@ def get_or_create_tag(authors):
     author_slug = ''
     for author in authors:
         print(f'Processing Author: {author}')
+        logging.info(f'Processing Author: {author}')
         tag = {
             'name': author,
             'description': f'В нашей рубрике вы найдете бесплатные онлайн версии книг автора {author}. Сможете прочитать или же скачать их. Откройте для себя великолепный мир слов, где каждая строчка – это приглашение в увлекательное приключение.',
@@ -156,6 +157,7 @@ def get_category_link_by_id(id):
 
 def get_categories():
     print('Запрашиваем список категорий (жанров)')
+    logging.info('Запрашиваем список категорий (жанров)')
     categories_list = []
     categories_dict = {}
     url = endpoints['categories']

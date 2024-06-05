@@ -9,7 +9,7 @@ import requests
 import pymupdf
 import zipfile
 
-from settings.settings import db_file
+from settings.settings import db_file, logging
 
 
 def extract_cover_from_fb2(filename, path):
@@ -82,6 +82,7 @@ def convert_fb2_to_pdf(filename, path):
 
 def download_file(url, path, session):
     print(f'Загружаем файл книги по ссылке {url}')
+    logging.info(f'Загружаем файл книги по ссылке {url}')
     response = session.get(url)
     if response.status_code == 200:
         headers = response.headers
@@ -94,6 +95,7 @@ def download_file(url, path, session):
             return new_filename
     else:
         print(f'Requests error in download_file: {response.status_code}')
+        logging.error(f'Requests error in download_file: {response.status_code}')
         return False
 
 def login_by_tg():
@@ -127,6 +129,7 @@ def add_title_to_db(title):
     with open(db_file, 'a') as file:
         file.write(title + '\n')
     print('Title книги успешно добавлен в файл БД.')
+    logging.info('Title книги успешно добавлен в файл БД.')
 
 
 def check_is_title_exists(title):
