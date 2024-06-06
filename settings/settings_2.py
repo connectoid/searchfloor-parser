@@ -11,10 +11,10 @@ base_url = 'https://searchfloor.org'
 title_postfix = ': скачать или читать онлайн'
 
 endpoints = {
-    'posts': 'https://skanbook.ru/wp-json/wp/v2/posts',
-    'media': 'https://skanbook.ru/wp-json/wp/v2/media',
-    'tags': 'https://skanbook.ru/wp-json/wp/v2/tags',
-    'categories': 'https://skanbook.ru/wp-json/wp/v2/categories',
+    'posts': 'https://926648cd8077.hosting.myjino.ru/wp-json/wp/v2/posts',
+    'media': 'https://926648cd8077.hosting.myjino.ru/wp-json/wp/v2/media',
+    'tags': 'https://926648cd8077.hosting.myjino.ru/wp-json/wp/v2/tags',
+    'categories': 'https://926648cd8077.hosting.myjino.ru/wp-json/wp/v2/categories',
 }
 prompt_description =  """
     Максимально подробно от 500 слов и не менее 5 абзацев опиши о чем книга, главных героев и сюжетную линию. Вступление не нужно, пиши сразу про книгу! Пиши только по сути, без размытых слов и фраз! Разбей текст на абзацы!
@@ -30,4 +30,3 @@ logging.basicConfig(
 
 MAX_PDF_SIZE = 5000000
 
-api_keys_file = 'api_keys.txt'

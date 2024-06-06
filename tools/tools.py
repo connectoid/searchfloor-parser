@@ -9,7 +9,7 @@ import requests
 import pymupdf
 import zipfile
 
-from settings.settings import db_file, logging
+from settings.settings import db_file, logging, api_keys_file
 
 
 def extract_cover_from_fb2(filename, path):
@@ -145,3 +145,37 @@ def get_file_size(filename, path):
     full_filename = f'{path}/{filename}'
     filesize = os.path.getsize(full_filename)
     return filesize
+
+
+def get_api_key():
+    """Возвращает первую строку из файла или False, если файл пустой."""
+    try:
+        with open(api_keys_file, 'r') as file:
+            return file.readline().strip()
+    except FileNotFoundError:
+        print("Файл не найден.")
+        return False
+    except IOError:
+        print("Ошибка при чтении файла.")
+        return False
+
+def remove_api_key():
+    """Удаляет первую строку из файла и возвращает True, если строка была удалена, иначе False."""
+    try:
+        with open(api_keys_file, 'r+') as file:
+            # Читаем весь файл в память
+            content = file.read()
+            # Если файл пустой, возвращаем False
+            if not content:
+                return False
+            # Удаляем первую строку и записываем обратно в файл
+            file.seek(0)  # Перемещаемся в начало файла
+            file.truncate()  # Удаляем содержимое файла
+            file.write(content[content.find('\n'):])  # Сохраняем оставшуюся часть файла
+            return True
+    except FileNotFoundError:
+        print("Файл не найден.")
+        return False
+    except IOError:
+        print("Ошибка при чтении/записи файла.")
+        return False

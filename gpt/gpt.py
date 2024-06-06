@@ -45,6 +45,32 @@ def add_file(filename, path, api_key):
         logging.error(f'Возможно закончилась подписка, пробуем следующий ключ')
 
 
+def delete_file(source_id, api_key):
+    print('Удаляем файл из ChatPDF')
+    logging.info('Удаляем файл из ChatPDF')
+
+    headers = {
+        'x-api-key': api_key,
+        'Content-Type': 'application/json',
+    }
+
+    data = {
+        'sources': [source_id],
+    }
+
+    try:
+        response = requests.post(
+            'https://api.chatpdf.com/v1/sources/delete', json=data, headers=headers)
+        response.raise_for_status()
+        print(f'Файл успешно удален из ChatPDF')
+        logging.info(f'Файл успешно удален из ChatPDF')
+    except requests.exceptions.RequestException as error:
+        print(f'Ошибка удаления файла из ChatPDF')
+        logging.info(f'Ошибка удаления файла из ChatPDF')
+        print('Error:', error)
+        print('Response:', error.response.text)
+
+
 def get_description(filename, path):
     genres_list, genres_dict = get_categories()
     prompt_genre =  f"""
