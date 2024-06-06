@@ -4,7 +4,8 @@ path = 'books'
 
 db_file = 'titles.txt'
 
-search_url = 'https://searchfloor.org/popular?category=books&period=today'
+# search_url = 'https://searchfloor.org/popular?category=books&period=today'
+search_url = 'https://searchfloor.org/popular?category=books&period=month'
 
 base_url = 'https://searchfloor.org'
 
