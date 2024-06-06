@@ -12,7 +12,7 @@ from settings.settings import path, search_url, logging, MAX_PDF_SIZE
 
 logging.info('PARSER STARTED')
 
-books_limit = 10
+books_limit = 1
 
 def main(session):
     books = get_books(search_url, session)
