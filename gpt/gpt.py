@@ -156,8 +156,8 @@ def get_description(filename, path):
         return description, genres_names, genres_ids
     elif upload_result['status_code']:
         if upload_result['status_code'] == 400:
-            print('ChatPDF: Ошибка загрузки файла, закончилась подписка на ChatPDF')
-            logging.error('ChatPDF: Ошибка загрузки файла, закончилась подписка на ChatPDF')
+            print('ChatPDF: Ошибка загрузки файла, закончилась подписка на ChatPDF, берем следующий ключ')
+            logging.error('ChatPDF: Ошибка загрузки файла, закончилась подписка на ChatPDF, берем следующий ключ')
             return False, False, False
         else:
             status_code = upload_result['status_code']

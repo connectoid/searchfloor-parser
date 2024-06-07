@@ -32,3 +32,11 @@ logging.basicConfig(
 MAX_PDF_SIZE = 5000000
 
 api_keys_file = 'api_keys.txt'
+
+login_params = {
+    'id': '327720091',
+    'first_name': b'%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B5%D0%B9',
+    'username': 'alex_web',
+    'auth_date': '1717621921',
+    'hash': '2f5a2e434fd8e6895071d64d36401bcc640918dcc73aa7232c8aee897d2a37da',
+}

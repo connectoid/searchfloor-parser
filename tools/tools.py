@@ -9,7 +9,7 @@ import requests
 import pymupdf
 import zipfile
 
-from settings.settings import db_file, logging, api_keys_file
+from settings.settings import db_file, logging, api_keys_file, login_params
 
 
 def extract_cover_from_fb2(filename, path):
@@ -179,3 +179,24 @@ def remove_api_key():
     except IOError:
         print("Ошибка при чтении/записи файла.")
         return False
+
+
+def move_first_key_to_end():
+    with open(api_keys_file, 'r') as file:
+        lines = file.readlines()
+    
+    if not lines:
+        return False
+    
+    first_line = lines.pop(0)
+    
+    with open(api_keys_file, 'w') as file:
+        file.writelines(lines)
+    
+    with open(api_keys_file, 'a') as file:
+        file.write(first_line)
+    
+    return True
+
+
+
