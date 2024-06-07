@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 from settings.settings import prompt_description, logging   
 from posting.posting import get_categories
-from tools.tools import get_api_key, remove_api_key
+from tools.tools import get_api_key, remove_api_key, move_first_key_to_end
 
 load_dotenv()
 # api_key = os.getenv('api_key')
@@ -158,6 +158,7 @@ def get_description(filename, path):
         if upload_result['status_code'] == 400:
             print('ChatPDF: Ошибка загрузки файла, закончилась подписка на ChatPDF, берем следующий ключ')
             logging.error('ChatPDF: Ошибка загрузки файла, закончилась подписка на ChatPDF, берем следующий ключ')
+            move_first_key_to_end()
             return False, False, False
         else:
             status_code = upload_result['status_code']
