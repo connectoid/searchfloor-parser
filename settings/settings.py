@@ -1,4 +1,6 @@
 import logging
+import datetime
+
 
 path = 'books'
 
@@ -40,3 +42,6 @@ login_params = {
     'auth_date': '1717621921',
     'hash': '2f5a2e434fd8e6895071d64d36401bcc640918dcc73aa7232c8aee897d2a37da',
 }
+
+current_year = datetime.datetime.now().strftime("%Y")
+

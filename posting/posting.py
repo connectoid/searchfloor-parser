@@ -7,7 +7,7 @@ from time import sleep
 from dotenv import load_dotenv
 
 from tools.tools import download_file, extract_zip
-from settings.settings import endpoints, title_postfix, logging
+from settings.settings import endpoints, title_postfix, logging, current_year
 
 load_dotenv()
 app_password = os.getenv('app_password')
@@ -33,7 +33,7 @@ def create_post(book):
             "avtor": book['avtor'],
             "yazyk": book['yazyk'],
             "zhanr": ', '.join(book['genres']),
-            "year": '2024',
+            "year": current_year,
             "download_title": f"Скачать книгу {book['title']} бесплатно",
             "enable-scan-download": True,
         }
