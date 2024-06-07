@@ -1,4 +1,5 @@
 from pprint import pprint
+from time import sleep
 
 from parsing.parsing import get_books, base_url, is_autorised, extract_txt_from_fb2
 from tools.tools import (download_file, convert_fb2_to_pdf, extract_cover_from_fb2, extract_genres_from_fb2,
@@ -6,7 +7,7 @@ from tools.tools import (download_file, convert_fb2_to_pdf, extract_cover_from_f
 from posting.posting import (create_post, get_or_create_tag, upload_book, upload_media, get_category_link_by_id,
                              update_post_by_reedon_link)
 from gpt.gpt import get_description
-from settings.settings import path, search_url, logging, MAX_PDF_SIZE
+from settings.settings import path, search_url, logging, MAX_PDF_SIZE, PARSE_INTERVAL
 
 
 
@@ -69,6 +70,7 @@ def main(session):
                 logging.info(f'Книга {title} уже добавлена, пропускаем.')
             # if count >= books_limit:
             #     break
+            sleep(PARSE_INTERVAL)
 
 
 if __name__ == '__main__':

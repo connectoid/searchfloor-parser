@@ -45,3 +45,4 @@ login_params = {
 
 current_year = datetime.datetime.now().strftime("%Y")
 
+PARSE_INTERVAL = 5 # seconds
