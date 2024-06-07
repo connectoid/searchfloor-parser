@@ -20,6 +20,7 @@ api_keys.append(os.getenv('api_key_3'))
 def add_file(filename, path, api_key):
     print('Загружаем файл на ChatPDF')
     logging.info('Загружаем файл на ChatPDF')
+    upload_result = {}
     files = [
         ('file', ('file', open(f'{path}/{filename}', 'rb'), 'application/octet-stream'))
     ]
@@ -34,16 +35,28 @@ def add_file(filename, path, api_key):
             print('Получен Source ID:', response.json()['sourceId'])
             logging.info('Получен Source ID')
             source_id = response.json()['sourceId']
-            return source_id
+            upload_result['success'] = True
+            upload_result['source_id'] = source_id
+            upload_result['status_code'] = response.status_code
+            return upload_result
         else:
             print('Status:', response.status_code)
             print('ChatPDF: add_file Error:', response.text)
             logging.error(f'ChatPDF: add_file Error: {response.text}')
-            return False
+            upload_result['success'] = False
+            upload_result['source_id'] = 0
+            upload_result['status_code'] = response.status_code
+            return upload_result
+
     except Exception as e:
         print(f'Ошибка запроса к ЧатПФД: {e}')
         print(f'Возможно закончилась подписка, пробуем следующий ключ')
         logging.error(f'Возможно закончилась подписка, пробуем следующий ключ')
+        upload_result['success'] = False
+        upload_result['source_id'] = 0
+        upload_result['status_code'] = 0
+        return upload_result
+
 
 
 def delete_file(source_id, api_key):
@@ -80,8 +93,9 @@ def get_description(filename, path):
     """
     print('Получаем описание книги с ChatPDF')
     logging.info('Получаем описание книги с ChatPDF')
-    source_id = add_file(filename, path, api_key)
-    if source_id:
+    upload_result = add_file(filename, path, api_key)
+    if upload_result['success']:
+        source_id = upload_result['status_code']
         headers = {
             'x-api-key': f'{api_key}',
             "Content-Type": "application/json",
@@ -140,7 +154,18 @@ def get_description(filename, path):
             genres_names = False
         delete_file(source_id, api_key)
         return description, genres_names, genres_ids
+    elif upload_result['status_code']:
+        if upload_result['status_code'] == 400:
+            print('ChatPDF: Ошибка загрузки файла, закончилась подписка на ChatPDF')
+            logging.error('ChatPDF: Ошибка загрузки файла, закончилась подписка на ChatPDF')
+            return False, False, False
+        else:
+            status_code = upload_result['status_code']
+            print(f'ChatPDF: Ошибка загрузки файла, status code: {status_code}')
+            logging.error(f'ChatPDF: Ошибка загрузки файла, status code: {status_code}')
+            return False, False, False
     else:
-        print('ChatPDF: Ошибка загрузки файла, возможно закончилась подписка на ChatPDF')
-        print('Пробуем следующий ключ')
-        logging.error('ChatPDF: Ошибка загрузки файла, возможно закончилась подписка на ChatPDF')
+        print(f'ChatPDF: Произошло исключение при попытке загрузить файл')
+        logging.error(f'ChatPDF: Произошло исключение при попытке загрузить файл')
+        return False, False, False
+
