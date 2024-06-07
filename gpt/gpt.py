@@ -95,7 +95,7 @@ def get_description(filename, path):
     logging.info('Получаем описание книги с ChatPDF')
     upload_result = add_file(filename, path, api_key)
     if upload_result['success']:
-        source_id = upload_result['status_code']
+        source_id = upload_result['source_id']
         headers = {
             'x-api-key': f'{api_key}',
             "Content-Type": "application/json",
