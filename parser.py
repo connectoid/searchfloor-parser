@@ -3,7 +3,8 @@ from time import sleep
 
 from parsing.parsing import get_books, base_url, is_autorised, extract_txt_from_fb2
 from tools.tools import (download_file, convert_fb2_to_pdf, extract_cover_from_fb2, extract_genres_from_fb2,
-                        login_by_tg, add_title_to_db, check_is_title_exists, get_file_size)
+                        login_by_tg, add_title_to_db, check_is_title_exists, get_file_size, 
+                        delete_all_files_in_directory)
 from posting.posting import (create_post, get_or_create_tag, upload_book, upload_media, get_category_link_by_id,
                              update_post_by_reedon_link, get_or_create_series, get_categories)
 from gpt.gpt import get_description
@@ -60,12 +61,12 @@ def main(session):
                         book['choose_file_fb2'] = upload_book(filename, path)
                         book['choose_file_txt'] = upload_book(txt_filename, path)
                         count += 1
-                        # pprint(book)
                         id, book_slug = create_post(book)
                         reedon_link = f'https://skanbook.ru/read/{book_slug}-{author_slug}-chitat-onlayn/'
                         reedon_link = reedon_link.replace('-skachat-i-chitat-onlayn', '')
                         update_post_by_reedon_link(id, reedon_link)
                         add_title_to_db(book['title'])
+                        delete_all_files_in_directory(path)
                     else:
                         print(f'Описание и жанр не получены, возможно закончилась подписка на ChatPDF')
                         logging.warning(f'Описание и жанр не получены, возможно закончилась подписка на ChatPDF')

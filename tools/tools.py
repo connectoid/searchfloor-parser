@@ -1,11 +1,11 @@
 import urllib.parse
 import os
-import io
+import shutil
+
 
 import xml.dom.minidom
 import base64
 
-import requests
 import pymupdf
 import zipfile
 
@@ -184,19 +184,24 @@ def remove_api_key():
 def move_first_key_to_end():
     with open(api_keys_file, 'r') as file:
         lines = file.readlines()
-    
     if not lines:
         return False
-    
     first_line = lines.pop(0)
-    
     with open(api_keys_file, 'w') as file:
         file.writelines(lines)
-    
     with open(api_keys_file, 'a') as file:
         file.write(first_line)
-    
     return True
 
+
+def delete_all_files_in_directory(directory_path):
+    if not os.path.exists(directory_path):
+        print(f"Директория {directory_path} не существует.")
+        return
+    for filename in os.listdir(directory_path):
+        file_path = os.path.join(directory_path, filename)
+        if os.path.isfile(file_path):
+            os.unlink(file_path)
+    
 
 
