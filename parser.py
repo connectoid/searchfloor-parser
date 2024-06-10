@@ -5,7 +5,7 @@ from parsing.parsing import get_books, base_url, is_autorised, extract_txt_from_
 from tools.tools import (download_file, convert_fb2_to_pdf, extract_cover_from_fb2, extract_genres_from_fb2,
                         login_by_tg, add_title_to_db, check_is_title_exists, get_file_size)
 from posting.posting import (create_post, get_or_create_tag, upload_book, upload_media, get_category_link_by_id,
-                             update_post_by_reedon_link)
+                             update_post_by_reedon_link, get_or_create_series, get_categories)
 from gpt.gpt import get_description
 from settings.settings import path, search_url, logging, MAX_PDF_SIZE, PARSE_INTERVAL
 
@@ -44,6 +44,14 @@ def main(session):
                         book['tags'] = authors_ids
                         authors_dict = dict(zip(book['authors'], authors_urls))
                         authors = [f'<a href=\"{authors_dict[book]}">{book}</a>' for book in authors_dict]
+                        book['acf_series'] = ''
+                        if book['series']:
+                            series_name = book['series']
+                            series_id, series_url = get_or_create_series(series_name)
+                            book['categories'].append(series_id)
+                            book['categories'].reverse()
+                            series = f'<a href=\"{series_url}">{series_name}</a>'
+                            book['acf_series'] = series
                         book['authors'] = authors
                         book['avtor'] = ', '.join(book['authors'])
                         book['yazyk'] = 'Русский'
@@ -68,8 +76,8 @@ def main(session):
                 title = book['title']
                 print(f'Книга {title} уже добавлена, пропускаем.')
                 logging.info(f'Книга {title} уже добавлена, пропускаем.')
-            # if count >= books_limit:
-            #     break
+            if count >= books_limit:
+                break
             sleep(PARSE_INTERVAL)
 
 

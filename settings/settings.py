@@ -18,6 +18,7 @@ endpoints = {
     'media': 'https://skanbook.ru/wp-json/wp/v2/media',
     'tags': 'https://skanbook.ru/wp-json/wp/v2/tags',
     'categories': 'https://skanbook.ru/wp-json/wp/v2/categories',
+    'series': 'https://skanbook.ru/wp-json/wp/v2/categories',
 }
 prompt_description =  """
     Максимально подробно от 500 слов и не менее 5 абзацев опиши о чем книга, главных героев и сюжетную линию. Вступление не нужно, пиши сразу про книгу! Пиши только по сути, без размытых слов и фраз! Разбей текст на абзацы!
@@ -44,5 +45,9 @@ login_params = {
 }
 
 current_year = datetime.datetime.now().strftime("%Y")
+current_date = datetime.datetime.now().strftime("%d.%m.%Y")
 
 PARSE_INTERVAL = 0 # seconds
+
+series_category_id = 207
+exclude_category_names = ['Серия', 'read']

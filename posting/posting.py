@@ -7,7 +7,8 @@ from time import sleep
 from dotenv import load_dotenv
 
 from tools.tools import download_file, extract_zip
-from settings.settings import endpoints, title_postfix, logging, current_year
+from settings.settings import (endpoints, title_postfix, logging, current_date, 
+                               series_category_id, exclude_category_names)
 
 load_dotenv()
 app_password = os.getenv('app_password')
@@ -32,8 +33,9 @@ def create_post(book):
             "карточка_вклвыкл": "Вкл",
             "avtor": book['avtor'],
             "yazyk": book['yazyk'],
+            "seriya": book['acf_series'],
             "zhanr": ', '.join(book['genres']),
-            "year": current_year,
+            "year": current_date,
             "download_title": f"Скачать книгу {book['title']} бесплатно",
             "enable-scan-download": True,
         }
@@ -103,7 +105,12 @@ def get_tag_by_id(id):
     return link
 
 
-
+def get_series_by_id(id):
+    endpoint = endpoints['series']
+    endpoint = f'{endpoint}/{id}'
+    response = requests.get(endpoint , headers=header)
+    link = response.json()['link']
+    return link
 
 
 def get_or_create_tag(authors):
@@ -138,6 +145,28 @@ def get_or_create_tag(authors):
     return authors_ids, authors_urls, author_slug
 
 
+def get_or_create_series(series):
+    endpoint = endpoints['series']
+    print(f'Processing Series: {series}')
+    logging.info(f'Processing Series: {series}')
+    series = {
+        'name': series,
+        'description': f'В нашей рубрике вы найдете бесплатные онлайн версии книг из серии {series}. Сможете прочитать или же скачать их. Откройте для себя великолепный мир слов, где каждая строчка – это приглашение в увлекательное приключение.',
+        'parent': series_category_id,
+    }
+    response = requests.post(endpoint , headers=header, json=series)
+    response_json = response.json()
+    if 'code' in response_json:
+        if response_json['code'] == 'term_exists':
+            series_id = response_json['data']['term_id']
+            series_url = get_series_by_id(series_id)
+    else:
+        series_id = response_json['id']
+        series_url = response_json['link']
+    return series_id, series_url
+
+
+
 def find_author(author_name):
     url = endpoints['tags']
     response = requests.get(url, headers=header)
@@ -161,11 +190,13 @@ def get_categories():
     categories_list = []
     categories_dict = {}
     url = endpoints['categories']
+    url = f'{url}?per_page=100&parent=0'
     response = requests.get(url, headers=header)
     for category in response.json():
-        category_name = category['name']
-        category_id = category['id']
-        categories_list.append(f'{category_name}')
-        categories_dict[category_name] = category_id
+        if category['name'] not in exclude_category_names:
+            category_name = category['name']
+            category_id = category['id']
+            categories_list.append(f'{category_name}')
+            categories_dict[category_name] = category_id
     return categories_list, categories_dict
 
