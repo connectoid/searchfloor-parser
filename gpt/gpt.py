@@ -89,7 +89,7 @@ def get_description(filename, path):
     api_key = get_api_key()
     genres_list, genres_dict = get_categories()
     prompt_genre =  f"""
-        Выбери один или несколько жанров из этого списка {genres_list} к которым можно отнести эти книги. В ответе укажи только один или несколько жанров через запятную, в точности так же как в этом списке {genres_list}
+        Выбери один или несколько жанров из этого списка {genres_list} к которым можно отнести эту книгу. В ответе укажи только один или несколько жанров через запятную, в точности так же как в этом списке {genres_list}
     """
     print('Получаем описание книги с ChatPDF')
     logging.info('Получаем описание книги с ChatPDF')
@@ -140,6 +140,10 @@ def get_description(filename, path):
             print('Жанры получены')
             logging.info('Жанры получены')
             genres = response_genre.json()['content']
+            print(f'Список категорий на сайте приемнике: {genres_list}')
+            print(f'Жанры от чатПДФ: {genres}')
+            logging.info(f'Список категорий на сайте приемнике: {genres_list}')
+            logging.info(f'Жанры от чатПДФ: {genres}')
             try:
                 genres_names = genres.split(',')
                 genres_ids = [genres_dict[genre.strip()] for genre in genres_names]
