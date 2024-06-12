@@ -144,7 +144,6 @@ def get_or_create_tag(authors):
         authors_urls.append(url)
     return authors_ids, authors_urls, author_slug
 
-"Серия книг Путь Паладина: скачать и читать онлайн бесплатно полностью"
 def get_or_create_series(series):
     endpoint = endpoints['series']
     print(f'Processing Series: {series}')
@@ -153,10 +152,10 @@ def get_or_create_series(series):
         'name': series,
         'description': f'В нашей рубрике вы найдете бесплатные онлайн версии книг из серии {series}. Сможете прочитать или же скачать их. Откройте для себя великолепный мир слов, где каждая строчка – это приглашение в увлекательное приключение.',
         'parent': series_category_id,
-        'yoast_head_json': {
-            'title': f'Серия книг {series}: скачать и читать онлайн бесплатно полностью',
-            'description': f'Серия книг {series}. Скачать или читать полные версии в форматах FB2, EPUB, TXT без регистрации',
-        }
+        # 'yoast_head_json': {
+        #     'title': f'Серия книг {series}: скачать и читать онлайн бесплатно полностью',
+        #     'description': f'Серия книг {series}. Скачать или читать полные версии в форматах FB2, EPUB, TXT без регистрации',
+        # }
     }
     response = requests.post(endpoint , headers=header, json=series)
     response_json = response.json()
