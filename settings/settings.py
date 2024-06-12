@@ -33,7 +33,7 @@ logging.basicConfig(
     datefmt='%H:%M:%S',
     )
 
-MAX_PDF_SIZE = 5000000
+MAX_PDF_SIZE = 4000000
 
 api_keys_file = 'api_keys.txt'
 
