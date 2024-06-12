@@ -9,7 +9,8 @@ def get_books(url, session):
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'lxml')
         main_div = soup.find('div', class_='tab-content')
-        book_divs = main_div.find_all('div', class_='container')
+        # book_divs = main_div.find_all('div', class_='container')
+        book_divs = main_div.find_all('div', {'style': 'margin-top: 1rem;'})
         count = 0
         skiped = 0
         for book in book_divs:
