@@ -38,8 +38,8 @@ def get_books(url, session):
                 logging.warning(f'Пропускаем донатную книгу {title}, так как нет подписки')
                 continue
             count += 1
-            print(f'{count}. Добавляем книгу {title}')
-            logging.info(f'{count}. Добавляем книгу {title}')
+            # print(f'{count}. Добавляем книгу {title}')
+            # logging.info(f'{count}. Добавляем книгу {title}')
             books.append(book_json)
         print(f'Донатных книг {skiped} из {count}')
         logging.info(f'Донатных книг {skiped} из {count}')
