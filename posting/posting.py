@@ -148,7 +148,7 @@ def get_or_create_series(series):
     endpoint = endpoints['series']
     print(f'Processing Series: {series}')
     logging.info(f'Processing Series: {series}')
-    series = {
+    series_json = {
         'name': series,
         'description': f"""
             Здесь вы сможете скачать или читать онлайн абсолютно бесплатно полную серию ваших любимых книг {series}. Наша цель – предоставить вам доступ к качественной литературе в удобном формате и без лишних затрат. В нашей коллекции вы найдете произведения самых разных жанров: от захватывающих фэнтези и научной фантастики до трогательных любовных романов и детективов.
@@ -160,7 +160,7 @@ def get_or_create_series(series):
         """,
         'parent': series_category_id,
     }
-    response = requests.post(endpoint , headers=header, json=series)
+    response = requests.post(endpoint , headers=header, json=series_json)
     response_json = response.json()
     if 'code' in response_json:
         if response_json['code'] == 'term_exists':
