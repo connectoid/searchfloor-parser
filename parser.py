@@ -23,8 +23,8 @@ def main(session):
         for book in books:
             if not check_is_title_exists(book['title']):
                 filename = download_file(book['url'], path, session)
-                txt_filename = extract_txt_from_fb2(filename, path)
                 if filename:
+                    txt_filename = extract_txt_from_fb2(filename, path)
                     print(f'Скачана книга {filename}')
                     logging.info(f'Скачана книга {filename}')
                     pdf_filename = convert_fb2_to_pdf(filename, path)
