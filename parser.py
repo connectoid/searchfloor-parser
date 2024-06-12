@@ -14,7 +14,7 @@ from settings.settings import path, search_url, logging, MAX_PDF_SIZE, PARSE_INT
 
 logging.info('PARSER STARTED')
 
-books_limit = 10
+books_limit = 1
 
 def main(session):
     books = get_books(search_url, session)
@@ -50,7 +50,6 @@ def main(session):
                             series_name = book['series']
                             series_id, series_url = get_or_create_series(series_name)
                             book['categories'].append(series_id)
-                            book['categories'].reverse()
                             series = f'<a href=\"{series_url}">{series_name}</a>'
                             book['acf_series'] = series
                         book['authors'] = authors
