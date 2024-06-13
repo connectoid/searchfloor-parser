@@ -1,5 +1,6 @@
 from pprint import pprint
 from time import sleep
+import shutil
 
 from parsing.parsing import get_books, base_url, is_autorised, extract_txt_from_fb2
 from tools.tools import (download_file, convert_fb2_to_pdf, extract_cover_from_fb2, extract_genres_from_fb2,
@@ -8,7 +9,7 @@ from tools.tools import (download_file, convert_fb2_to_pdf, extract_cover_from_f
 from posting.posting import (create_post, get_or_create_tag, upload_book, upload_media, get_category_link_by_id,
                              update_post_by_reedon_link, get_or_create_series, get_categories)
 from gpt.gpt import get_description
-from settings.settings import path, search_url, logging, MAX_PDF_SIZE, PARSE_INTERVAL
+from settings.settings import path, search_url, logging, MAX_PDF_SIZE, PARSE_INTERVAL, default_picture_filename
 
 
 
@@ -33,6 +34,9 @@ def main(session):
                         logging.warning(f'Файл {pdf_filename} слишком большой, пропускаем')
                         continue
                     picture_filename = extract_cover_from_fb2(filename, path)
+                    if not picture_filename:
+                        picture_filename = default_picture_filename
+                        shutil.copy(picture_filename, path)
                     description, genres_names, genres_ids = get_description(pdf_filename, path)
                     if description and genres_names and genres_ids:
                         genres_urls = [get_category_link_by_id(id) for id in genres_ids]

@@ -53,3 +53,4 @@ PARSE_INTERVAL = 0 # seconds
 
 series_category_id = 207
 exclude_category_names = ['Серия', 'read']
+default_picture_filename = 'cover.jpg'
