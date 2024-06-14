@@ -60,17 +60,12 @@ def delect_section_from_fb2(filename, path):
 
 def extract_zip(archive, path):
     archive = f'{path}/{archive}'
-    print(f'archive: {archive}')
     with zipfile.ZipFile(archive, 'r') as zip_file:
         filename = zip_file.namelist()[0]
-        print(f'filename: {filename}')
-        new_filename = filename.replace('\u2026', '')
-        print(f'new_filename: {new_filename}')
+        
         zip_file.extractall(path)
-        os.rename(filename, new_filename)
-        print(f'filename: {filename}')
         os.remove(archive)
-    return new_filename
+    return filename
 
 
 def convert_fb2_to_pdf(filename, path):
