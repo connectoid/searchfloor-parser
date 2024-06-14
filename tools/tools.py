@@ -92,6 +92,7 @@ def download_file(url, path, session):
         with open(f'{path}/{filename}', 'wb') as file:
             file.write(response.content)
             new_filename = extract_zip(filename, path)
+            new_filename = new_filename.replace('\u2026', '')
             return new_filename
     else:
         print(f'Requests error in download_file: {response.status_code}')
