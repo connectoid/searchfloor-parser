@@ -62,9 +62,11 @@ def extract_zip(archive, path):
     archive = f'{path}/{archive}'
     with zipfile.ZipFile(archive, 'r') as zip_file:
         filename = zip_file.namelist()[0]
+        new_filename = filename.replace('\u2026', '')
         zip_file.extractall(path)
+        os.rename(filename, new_filename)
         os.remove(archive)
-    return filename
+    return new_filename
 
 
 def convert_fb2_to_pdf(filename, path):
@@ -89,7 +91,6 @@ def download_file(url, path, session):
         content_disposition = headers['content-disposition']
         filename = content_disposition.split("filename*=UTF-8''")[-1]
         filename = urllib.parse.unquote(filename)
-        filename = filename.replace('\u2026', '')
         with open(f'{path}/{filename}', 'wb') as file:
             file.write(response.content)
             new_filename = extract_zip(filename, path)

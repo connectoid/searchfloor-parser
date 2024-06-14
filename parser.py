@@ -37,6 +37,7 @@ def main(session):
                     if not picture_filename:
                         picture_filename = default_picture_filename
                         shutil.copy(picture_filename, path)
+                    return
                     description, genres_names, genres_ids = get_description(pdf_filename, path)
                     if description and genres_names and genres_ids:
                         genres_urls = [get_category_link_by_id(id) for id in genres_ids]
