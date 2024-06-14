@@ -89,10 +89,10 @@ def download_file(url, path, session):
         content_disposition = headers['content-disposition']
         filename = content_disposition.split("filename*=UTF-8''")[-1]
         filename = urllib.parse.unquote(filename)
+        filename = filename.replace('\u2026', '')
         with open(f'{path}/{filename}', 'wb') as file:
             file.write(response.content)
             new_filename = extract_zip(filename, path)
-            new_filename = new_filename.replace('\u2026', '')
             return new_filename
     else:
         print(f'Requests error in download_file: {response.status_code}')
