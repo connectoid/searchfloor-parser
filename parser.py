@@ -89,11 +89,8 @@ if __name__ == '__main__':
     session, status_code = login_by_tg()
     if status_code == 200:
         authorised = is_autorised(base_url, session)
+        print(f'Authorised')
         main(session)
-        # if authorised:
-        #     print(f'Authorised: {authorised}')
-        #     main(session)
-        # else:
-        #     print(f'Авторизация на сайте источнике не пройдена')
     else:
         print(f'Ошибка при авторизации: {status_code}')
+        print(f'Not Authorised')

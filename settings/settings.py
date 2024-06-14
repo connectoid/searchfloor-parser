@@ -38,13 +38,14 @@ MAX_PDF_SIZE = 4000000
 api_keys_file = 'api_keys.txt'
 
 login_params = {
-    'id': '696112726',
-    'first_name': '%D0%94%D0%B0%D1%80%D1%8C%D1%8F',
-    'last_name': '%D0%9A%D1%83%D1%80%D0%B8%D0%BB%D0%BA%D0%BE',
-    'username': 'goldperson666',
-    'auth_date': '1717851442',
-    'hash': 'a0b5a35f22a7035a414ff88251ec3ce47ebe3f929caff6993d9c64b1062b3b88',
+    'id': '327720091',
+    'first_name': 'Alexey',
+    'username': 'alex_web',
+    'photo_url': 'https://t.me/i/userpic/320/YLAbyzjRm0fLnTm8v4d3FS2IWEhMvyO13Fnj2_DPuF4.jpg',
+    'auth_date': '1718334865',
+    'hash': 'b896af95593ae3d817437d2741d442d081afdeff430d079141fe32ee5d7e15e0',
 }
+
 
 current_year = datetime.datetime.now().strftime("%Y")
 current_date = datetime.datetime.now().strftime("%d.%m.%Y")
